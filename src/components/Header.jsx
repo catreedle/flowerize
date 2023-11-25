@@ -1,5 +1,5 @@
 import React from 'react'
-import { dancingScript } from '../layout'
+import { dancingScript } from '../app/layout'
 
 export const Header = () => {
     return (
