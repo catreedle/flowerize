@@ -20,7 +20,7 @@ export const dancingScript = Dancing_Script({ weight: "700", subsets: ['latin'] 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`{${inter.className} bg-gradient-to-b from-slate-50 to-rose-200 h-screen`}>
+      <body className={`{${inter.className} bg-gradient-to-b from-slate-50 to-rose-200 h-screen bg-fixed`}>
         <main className=' flex justify-center items-center mx-4'>
           <FlowerizeProvider>
             {children}
