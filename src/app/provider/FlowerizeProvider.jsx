@@ -19,6 +19,8 @@ export const FlowerizeProvider = ({ children }) => {
     const [singleData, setSingleData] = useState({ content: "", additionalData: "", user });
     const [flowers, setFlowers] = useState([]);
     const [isLoading, setLoading] = useState(false);
+    const [isOnEdit, setIsOnEdit] = useState(false);
+    const [id_update, setId] = useState('')
 
 
     const checkUrlImage = async (urlImage) => {
@@ -72,10 +74,10 @@ export const FlowerizeProvider = ({ children }) => {
 
             const data = await res.json();
             console.log('success', data);
-            // setSingleData({
-            //     content: '',
-            //     additionalData: ''
-            // })
+            setSingleData({
+                content: '',
+                additionalData: ''
+            })
             return data;
         } catch (error) {
             console.error('Error during fetch:', error);
@@ -103,13 +105,73 @@ export const FlowerizeProvider = ({ children }) => {
     }
 
 
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+
+    const editData = (id, { content, additionalData }) => {
+        setIsOnEdit(true)
+        scrollToTop()
+        setId(id)
+        setSingleData((prevData) => ({
+            ...prevData,
+            content,
+            additionalData
+        }))
+    }
+
+    const cancelEdit = () => {
+        setIsOnEdit(false);
+        setSingleData({
+            content: '',
+            additionalData: ''
+        })
+    }
+
+    async function updateData(id_update) {
+        console.log('updating', id_update)
+
+
+        try {
+            setLoading(true);
+            const res = await fetch(url_item + id_update, {
+                method: "PATCH",
+                body: JSON.stringify(singleData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!res.ok) {
+                throw new Error(`HTTP error! Status: ${res.status}`);
+            }
+
+            const data = await res.json();
+            console.log('success', data);
+            setSingleData({
+                content: '',
+                additionalData: ''
+            })
+
+        } catch (error) {
+            console.error('Error during fetch:', error)
+        } finally {
+            setIsOnEdit(false)
+            setLoading(false)
+        }
+    }
+
+
     useEffect(() => {
         getData()
     }, [isLoading])
 
 
     return (
-        <FlowerizeContext.Provider value={{ flowers, singleData, addData, onContentChange, onImageChange, deleteData, isLoading }}>{children}</FlowerizeContext.Provider>
+        <FlowerizeContext.Provider value={{ flowers, singleData, isLoading, isOnEdit, id_update, setIsOnEdit, addData, onContentChange, onImageChange, deleteData, editData, cancelEdit, updateData }}>{children}</FlowerizeContext.Provider>
     )
 
 }
