@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { FlowerizeContext } from "./provider/FlowerizeProvider";
 import ReactLoading from 'react-loading'
 import Head from 'next/head';
+import { Footer } from './components/Footer';
 
 
 export const dancingScript = Dancing_Script({ weight: "700", subsets: ['latin'] })
@@ -35,6 +36,7 @@ export default function Home() {
             return <Card key={id} id={id} content={content} additionalData={additionalData} />
           })}
         </div>
+        <Footer />
       </div>
     </>
 
