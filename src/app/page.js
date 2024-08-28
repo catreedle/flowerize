@@ -12,12 +12,11 @@ export const dancingScript = Dancing_Script({ weight: "700", subsets: ['latin'] 
 export default async function Page() {
   async function getFlowers() {
     const res = await fetch(url, { cache: "no-store" })
-    const { items } = await res.json()
+    const items = await res.json()
     return items
   }
 
   const flowers = await getFlowers()
-  console.log(flowers)
   return (
     <>
       <div className=" space-y-3 lg:space-y-8 relative">
@@ -25,7 +24,7 @@ export default async function Page() {
         <Input />
 
         <div className=" lg:grid lg:grid-cols-4 gap-1 lg:gap-6">
-          {flowers.map(({ id, content, additionalData }) => {
+          {flowers && flowers.map(({ id, content, additionalData }) => {
             return <Card key={id} id={id} content={content} additionalData={additionalData} />
           })}
         </div>
